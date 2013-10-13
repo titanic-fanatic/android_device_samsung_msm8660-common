@@ -20,9 +20,6 @@ TARGET_BOARD_PLATFORM_GPU := qcom-adreno200
 TARGET_CPU_VARIANT := scorpion
 TARGET_CPU_SMP := true
 
-# Dalvik startup with a low memory footprint
-TARGET_ARCH_LOWMEM := true
-
 # inherit from qcom-common
 -include device/samsung/qcom-common/BoardConfigCommon.mk
 
