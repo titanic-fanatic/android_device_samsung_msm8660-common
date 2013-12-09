@@ -39,6 +39,9 @@ public class SensorsFragmentActivity extends PreferenceFragment {
     private static final String FILE_TOUCHKEY_LIGHT = "/data/.disable_touchlight";
     private static final String FILE_TOUCHKEY_TOGGLE = "/sys/class/misc/sec_touchkey/brightness";
     private static final String FILE_BLN_TOGGLE = "/sys/class/misc/backlightnotification/enabled";
+    private static final String FILE_BLN_CONTROL = "/sys/class/misc/backlightnotification/blink_control";
+    private static final String FILE_BLN_TIMEOUT = "/sys/class/misc/backlightnotification/blink_timeout";
+    private static final String FILE_BLN_INTERVAL = "/sys/class/misc/backlightnotification/blink_interval";
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -72,6 +75,9 @@ public class SensorsFragmentActivity extends PreferenceFragment {
             Utils.writeValue(FILE_TOUCHKEY_TOGGLE, ((CheckBoxPreference)preference).isChecked() ? "1" : "2");
         } else if (key.compareTo(DeviceSettings.KEY_TOUCHKEY_BLN) == 0) {
             Utils.writeValue(FILE_BLN_TOGGLE, ((CheckBoxPreference)preference).isChecked() ? "1" : "0");
+        } else if (key.compareTo(DeviceSettings.KEY_TOUCHKEY_BLN_OFF) == 0) {
+            Utils.writeValue(FILE_BLN_CONTROL, "0");
+            Utils.showDialog((Context)getActivity(), "BLN Turned Off", "BLN has been successfully turned off!");
         }
 
         return true;

@@ -25,10 +25,16 @@
     <string name="use_gyro_calibration_summary_head">Use the gyroscope calibration values. Do a calibration after checking this!</string>
     <string name="calibrate_gyro_title_head">Calibrate</string>
     <string name="calibrate_gyro_summary_head">Put your phone on a flat surface, and press this to calibrate</string>
+    
     <string name="touchkey_subcat_title">Touch key</string>
     <string name="touchkey_light_title_head">Enable keys backlight</string>
     <string name="touchkey_light_summary_head">Light up touch keys when screen is on</string>
     <string name="touchkey_bln_title_head">Enable keys notifications</string>
     <string name="touchkey_bln_summary_head">Light up touch keys when screen is off, and a notification is received</string>
+    <string name="touchkey_bln_off_title_head">Turn off BLN</string>
+    <string name="touchkey_bln_off_summary_head">Turn off BLN if it is stuck. Will not disable BLN.</string>
+    <string name="touchkey_bln_interval_title_head">Set blink interval</string>
+    <string name="touchkey_bln_interval_summary_head">Set the number of seconds that the backlight will staty on/off during BLN notification.</string>
+    <string name="touchkey_bln_interval_dialog_message">Set the blink on/off duration in miliseconds.</string>
 
 </resources>
