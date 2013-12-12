@@ -115,6 +115,9 @@ public class BlinkInterval extends DialogPreference implements android.widget.Bu
         super.onDialogClosed(positiveResult);
 
         if (positiveResult) {
+            mPickerOn.clearFocus();
+            mPickerOff.clearFocus();
+            
             int valueOn = mPickerOn.getValue();
             int valueOff = mPickerOff.getValue();
             String valueOnOff = valueOn + " " + valueOff;

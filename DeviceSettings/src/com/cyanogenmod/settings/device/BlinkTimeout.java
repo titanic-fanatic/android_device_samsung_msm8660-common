@@ -111,6 +111,8 @@ public class BlinkTimeout extends DialogPreference implements android.widget.But
         super.onDialogClosed(positiveResult);
 
         if (positiveResult) {
+            mPickerTimeout.clearFocus();
+            
             int valueTimeout = mPickerTimeout.getValue();
             String sTimeout = valueTimeout + "";
             
