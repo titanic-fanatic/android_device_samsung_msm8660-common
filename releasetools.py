@@ -50,6 +50,3 @@ def AddBasebandAssertion(info, input_zip):
       info.script.script.append(info.script._WordWrap(cmd))
     info.metadata["pre-baseband"] = m.group(1)
 
-def FullOTA_InstallEnd(info):
-  info.script.AppendExtra('delete("/system/bin/mpdecision");')
-  info.script.AppendExtra('delete("/system/bin/thermald");')
