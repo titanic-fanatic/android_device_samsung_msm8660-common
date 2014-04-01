@@ -97,10 +97,6 @@ endif # BOARD_HAVE_NFC
 PRODUCT_PACKAGES += \
     com.android.future.usb.accessory
 
-# Frandom Script
-PRODUCT_COPY_FILES += \
-	device/samsung/msm8660-common/prebuilt/etc/init.d/00_frandom:/system/etc/init.d/00_frandom
-
 # Live Wallpapers
 PRODUCT_PACKAGES += \
     LiveWallpapers \
