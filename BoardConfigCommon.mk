@@ -44,7 +44,8 @@ WIFI_DRIVER_FW_PATH_P2P     := "/system/etc/wifi/bcmdhd_p2p.bin"
 
 # QCOM
 BOARD_USES_QCOM_HARDWARE := true
-COMMON_GLOBAL_CFLAGS += -DQCOM_HARDWARE
+TARGET_USES_QCOM_BSP := true
+COMMON_GLOBAL_CFLAGS += -DQCOM_HARDWARE -DQCOM_BSP
 
 # Recovery
 TARGET_RECOVERY_PIXEL_FORMAT := "RGBX_8888"
@@ -53,6 +54,7 @@ RECOVERY_FSTAB_VERSION := 2
 
 # Adreno configuration
 BOARD_EGL_CFG := device/samsung/msm8660-common/configs/egl.cfg
+NUM_FRAMEBUFFER_SURFACE_BUFFERS := 3
 
 # Bluetooth
 BOARD_HAVE_BLUETOOTH := true
@@ -94,6 +96,9 @@ TARGET_DISPLAY_USE_RETIRE_FENCE := true
 
 # Use CM PowerHAL
 TARGET_USES_CM_POWERHAL := true
+
+# Recovery
+BOARD_CUSTOM_GRAPHICS := ../../../device/samsung/msm8660-common/recovery/graphics.c
 
 # SELinux
 BOARD_SEPOLICY_DIRS += \
