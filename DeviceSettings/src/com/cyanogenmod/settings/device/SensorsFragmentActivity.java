@@ -54,7 +54,7 @@ public class SensorsFragmentActivity extends PreferenceFragment {
         PreferenceScreen prefSet = getPreferenceScreen();
 
         final PreferenceGroup motorsCategory =
-                (PreferenceGroup) findPreference(DisplaySettings.KEY_SENSORS_MOTORS_CATEGORY);
+                (PreferenceGroup) findPreference(DeviceSettings.KEY_SENSORS_MOTORS_CATEGORY);
 
         if (!VibratorIntensity.isSupported()) {
             prefSet.removePreference(motorsCategory);
