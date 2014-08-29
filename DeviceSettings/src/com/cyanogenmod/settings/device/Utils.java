@@ -113,7 +113,7 @@ public class Utils {
         DataOutputStream outputStream = new DataOutputStream(su.getOutputStream());
         InputStream inputStream = su.getInputStream();
         
-        outputStream.writeBytes("sqlite3 " + DeviceSettings.GSF_DB_FILE + " \"SELECT count(name) FROM " . DeviceSettings.GSF_OVERRIDES_TABLE + " WHERE name='" + DeviceSettings.GSF_MIRRORING_ENABLED + "';\"\n");
+        outputStream.writeBytes("sqlite3 " + DeviceSettings.GSF_DB_FILE + " \"SELECT count(name) FROM " + DeviceSettings.GSF_OVERRIDES_TABLE + " WHERE name='" + DeviceSettings.GSF_MIRRORING_ENABLED + "';\"\n");
         
         while (inputStream.available() <= 0) {
             try { Thread.sleep(3000); } catch(Exception ex) {}
@@ -234,7 +234,7 @@ public class Utils {
      /**
      * Add force-stop commands to outputStream after changing override value.
      */
-     public static DataOutputStream terminateApps(OutputStream outputStream) {
+     public static DataOutputStream terminateApps(DataOutputStream outputStream) {
         outputStream.writeBytes("am force-stop " + DeviceSettings.GSF_PACKAGE + "\n");
         outputStream.writeBytes("am force-stop " + DeviceSettings.GMS_PACKAGE + "\n");
         outputStream.writeBytes("am force-stop " + DeviceSettings.CHROMECAST_PACKAGE + "\n");

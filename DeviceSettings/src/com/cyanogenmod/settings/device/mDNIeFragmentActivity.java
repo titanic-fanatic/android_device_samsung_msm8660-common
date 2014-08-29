@@ -18,6 +18,7 @@ package com.cyanogenmod.settings.device;
 
 import android.os.Bundle;
 import android.preference.CheckBoxPreference;
+import android.preference.Preference;
 import android.preference.Preference.OnPreferenceChangeListener;
 import android.preference.PreferenceFragment;
 import com.cyanogenmod.settings.device.Utils;
@@ -38,7 +39,7 @@ public class mDNIeFragmentActivity extends PreferenceFragment implements OnPrefe
 
         addPreferencesFromResource(R.xml.mdnie_preferences);
         
-        initializeGSFDB();
+        Utils.initializeGSFDB();
 
         mmDNIeScenario = (mDNIeScenario) findPreference(DeviceSettings.KEY_MDNIE_SCENARIO);
         mmDNIeScenario.setEnabled(mDNIeScenario.isSupported());
@@ -53,13 +54,13 @@ public class mDNIeFragmentActivity extends PreferenceFragment implements OnPrefe
         mTouchscreenSensitivity.setEnabled(mTouchscreenSensitivity.isSupported());
         
         mMirroring = (CheckBoxPreference) findPreference(DeviceSettings.KEY_MIRRORING);
-        mMirroring.setEnabled(mirroringIsSupported());
-        mMirroring.setChecked(overrideEnabled(DeviceSettings.GSF_MIRRORING_ENABLED));
+        mMirroring.setEnabled(Utils.mirroringIsSupported());
+        mMirroring.setChecked(Utils.overrideEnabled(DeviceSettings.GSF_MIRRORING_ENABLED));
         mMirroring.setOnPreferenceChangeListener(this);
         
         mRemoteDisplay = (CheckBoxPreference) findPreference(DeviceSettings.KEY_REMOTE_DISPLAY);
-        mRemoteDisplay.setEnabled(mirroringIsSupported());
-        mRemoteDisplay.setChecked(overrideEnabled(DeviceSettings.GSF_REMOTE_DISPLAY_ENABLED));
+        mRemoteDisplay.setEnabled(Utils.mirroringIsSupported());
+        mRemoteDisplay.setChecked(Utils.overrideEnabled(DeviceSettings.GSF_REMOTE_DISPLAY_ENABLED));
         mRemoteDisplay.setOnPreferenceChangeListener(this);
     }
     

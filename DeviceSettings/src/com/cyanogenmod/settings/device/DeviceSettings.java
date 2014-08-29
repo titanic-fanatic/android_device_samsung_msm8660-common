@@ -51,6 +51,7 @@ public class DeviceSettings extends FragmentActivity {
     public static final String KEY_TOUCHKEY_BLN_INTERVAL = "touchkey_bln_interval";
     public static final String KEY_TOUCHKEY_BLN_TIMEOUT = "touchkey_bln_timeout";
     public static final String GSF_DB_FILE = "/data/data/com.google.android.gsf/databases/gservices.db";
+    public static final String SUBMIX_FILE = "/system/lib/hw/audio.r_submix.default.so";
     public static final String GSF_OVERRIDES_TABLE = "overrides";
     public static final String GSF_MIRRORING_ENABLED = "gms:cast:mirroring_enabled";
     public static final String GSF_REMOTE_DISPLAY_ENABLED = "gms:cast:remote_display_enabled";
