@@ -68,11 +68,11 @@ public class mDNIeFragmentActivity extends PreferenceFragment implements OnPrefe
         final String key = preference.getKey();
         final boolean checkboxEnabled = newValue.toString().equals("true");
         
-        if (key.equals(DeviceSettings.KEY_MIRRORING) {
+        if (key.equals(DeviceSettings.KEY_MIRRORING)) {
             setOverride(DeviceSettings.GSF_MIRRORING_ENABLED, checkboxEnabled);
             return true;
         }
-        else if (key.equals(DeviceSettings.KEY_REMOTE_DISPLAY) {
+        else if (key.equals(DeviceSettings.KEY_REMOTE_DISPLAY)) {
             setOverride(DeviceSettings.GSF_REMOTE_DISPLAY_ENABLED, checkboxEnabled);
             return true;
         }
