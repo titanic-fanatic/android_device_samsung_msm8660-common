@@ -176,7 +176,6 @@ public class Utils {
                 //su.waitFor();
             }
         } catch (IOException e) {
-        } catch (InterruptedException e) {
         }
      }
      
@@ -210,7 +209,6 @@ public class Utils {
             outputStream.flush();
             //su.waitFor();
         } catch (IOException e) {
-        } catch (InterruptedException e) {
         }
         
         return overrideEnabled;
@@ -235,7 +233,6 @@ public class Utils {
             outputStream.flush();
             //su.waitFor();
         } catch (IOException e) {
-        } catch (InterruptedException e) {
         }
         
         return overrideEnabled;
