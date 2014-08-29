@@ -127,7 +127,7 @@ public class Utils {
             
             outputStream.writeBytes("exit\n");
             outputStream.flush();
-            su.waitFor();
+            //su.waitFor();
             
             bytesRead = 0;
             buffer = new byte[4096];
@@ -154,7 +154,7 @@ public class Utils {
             
             outputStream.writeBytes("exit\n");
             outputStream.flush();
-            su.waitFor();
+            //su.waitFor();
             
             if (!gsfMirroringEnabledExists || !gsfRemoteDisplayEnabledExists) {
                 su = Runtime.getRuntime().exec("su");
@@ -173,7 +173,7 @@ public class Utils {
                 outputStream = terminateApps(outputStream);
                 outputStream.writeBytes("exit\n");
                 outputStream.flush();
-                su.waitFor();
+                //su.waitFor();
             }
         } catch (IOException e) {
         } catch (InterruptedException e) {
@@ -208,7 +208,7 @@ public class Utils {
             
             outputStream.writeBytes("exit\n");
             outputStream.flush();
-            su.waitFor();
+            //su.waitFor();
         } catch (IOException e) {
         } catch (InterruptedException e) {
         }
@@ -228,12 +228,12 @@ public class Utils {
             Process su = Runtime.getRuntime().exec("su");
             DataOutputStream outputStream = new DataOutputStream(su.getOutputStream());
             
-            outputStream.writeBytes("sqlite3 " + DeviceSettings.GSF_DB_FILE + " \"UPDATE " + DeviceSettings.GSF_OVERRIDES_TABLE + " SET value='" + Boolean.toString(overrideEnabled) + "' WHERE name='" + name + "';\"\n");
+            outputStream.writeBytes("sqlite3 " + DeviceSettings.GSF_DB_FILE + " \"UPDATE " + DeviceSettings.GSF_OVERRIDES_TABLE + " SET value='" + Boolean.toString(enabled) + "' WHERE name='" + name + "';\"\n");
             
             outputStream = terminateApps(outputStream);
             outputStream.writeBytes("exit\n");
             outputStream.flush();
-            su.waitFor();
+            //su.waitFor();
         } catch (IOException e) {
         } catch (InterruptedException e) {
         }
