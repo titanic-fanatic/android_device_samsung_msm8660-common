@@ -87,7 +87,7 @@ public class Utils {
      * Check if mirroring is supported.
      *
      */
-    public boolean mirroringIsSupported() {
+    public static boolean mirroringIsSupported() {
         try {
             File submixFile = new File(DeviceSettings.SUBMIX_FILE);
             
@@ -190,7 +190,7 @@ public class Utils {
         DataOutputStream outputStream = new DataOutputStream(su.getOutputStream());
         InputStream inputStream = su.getInputStream();
         
-        outputStream.writeBytes("sqlite3 " + DeviceSettings.GSF_DB_FILE + " \"SELECT value FROM " . DeviceSettings.GSF_OVERRIDES_TABLE + " WHERE name='" + name + "';\"\n");
+        outputStream.writeBytes("sqlite3 " + DeviceSettings.GSF_DB_FILE + " \"SELECT value FROM " + DeviceSettings.GSF_OVERRIDES_TABLE + " WHERE name='" + name + "';\"\n");
         
         while (inputStream.available() <= 0) {
             try { Thread.sleep(3000); } catch(Exception ex) {}
@@ -221,7 +221,7 @@ public class Utils {
         Process su = Runtime.getRuntime().exec("su");
         DataOutputStream outputStream = new DataOutputStream(su.getOutputStream());
         
-        outputStream.writeBytes("sqlite3 " + DeviceSettings.GSF_DB_FILE + " \"UPDATE " . DeviceSettings.GSF_OVERRIDES_TABLE + " SET value='" + enabled.toString().equals("true") + "' WHERE name='" + name + "';\"\n");
+        outputStream.writeBytes("sqlite3 " + DeviceSettings.GSF_DB_FILE + " \"UPDATE " + DeviceSettings.GSF_OVERRIDES_TABLE + " SET value='" + enabled.toString().equals("true") + "' WHERE name='" + name + "';\"\n");
         
         outputStream = terminateApps(outputStream);
         outputStream.writeBytes("exit\n");
