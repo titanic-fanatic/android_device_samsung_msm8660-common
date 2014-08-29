@@ -250,7 +250,6 @@ public class Utils {
             outputStream.writeBytes("am force-stop " + DeviceSettings.GMS_PACKAGE + "\n");
             outputStream.writeBytes("am force-stop " + DeviceSettings.CHROMECAST_PACKAGE + "\n");
         } catch (IOException e) {
-        } catch (InterruptedException e) {
         }
         
         return outputStream;
