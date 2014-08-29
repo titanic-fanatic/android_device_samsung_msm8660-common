@@ -221,7 +221,7 @@ public class Utils {
         Process su = Runtime.getRuntime().exec("su");
         DataOutputStream outputStream = new DataOutputStream(su.getOutputStream());
         
-        outputStream.writeBytes("sqlite3 " + DeviceSettings.GSF_DB_FILE + " \"UPDATE " + DeviceSettings.GSF_OVERRIDES_TABLE + " SET value='" + overrideEnabled.toString() + "' WHERE name='" + name + "';\"\n");
+        outputStream.writeBytes("sqlite3 " + DeviceSettings.GSF_DB_FILE + " \"UPDATE " + DeviceSettings.GSF_OVERRIDES_TABLE + " SET value='" + Boolean.toString(overrideEnabled) + "' WHERE name='" + name + "';\"\n");
         
         outputStream = terminateApps(outputStream);
         outputStream.writeBytes("exit\n");
