@@ -188,26 +188,30 @@ public class Utils {
         byte[] buffer = new byte[4096];
         boolean overrideEnabled = false;
         
-        Process su = Runtime.getRuntime().exec("su");
-        DataOutputStream outputStream = new DataOutputStream(su.getOutputStream());
-        InputStream inputStream = su.getInputStream();
-        
-        outputStream.writeBytes("sqlite3 " + DeviceSettings.GSF_DB_FILE + " \"SELECT value FROM " + DeviceSettings.GSF_OVERRIDES_TABLE + " WHERE name='" + name + "';\"\n");
-        
-        while (inputStream.available() <= 0) {
-            try { Thread.sleep(3000); } catch(Exception ex) {}
-        }
+        try {
+            Process su = Runtime.getRuntime().exec("su");
+            DataOutputStream outputStream = new DataOutputStream(su.getOutputStream());
+            InputStream inputStream = su.getInputStream();
+            
+            outputStream.writeBytes("sqlite3 " + DeviceSettings.GSF_DB_FILE + " \"SELECT value FROM " + DeviceSettings.GSF_OVERRIDES_TABLE + " WHERE name='" + name + "';\"\n");
+            
+            while (inputStream.available() <= 0) {
+                try { Thread.sleep(3000); } catch(Exception ex) {}
+            }
 
-        while (inputStream.available() > 0) {
-            bytesRead = inputStream.read(buffer);
-            if ( bytesRead <= 0 ) break;
-            String seg = new String(buffer,0,bytesRead);   
-            overrideEnabled = seg.equals("false") ? false : (seg.equals("true") ? true : false);
+            while (inputStream.available() > 0) {
+                bytesRead = inputStream.read(buffer);
+                if ( bytesRead <= 0 ) break;
+                String seg = new String(buffer,0,bytesRead);   
+                overrideEnabled = seg.equals("false") ? false : (seg.equals("true") ? true : false);
+            }
+            
+            outputStream.writeBytes("exit\n");
+            outputStream.flush();
+            su.waitFor();
+        } catch (IOException e) {
+        } catch (InterruptedException e) {
         }
-        
-        outputStream.writeBytes("exit\n");
-        outputStream.flush();
-        su.waitFor();
         
         return overrideEnabled;
      }
@@ -220,15 +224,19 @@ public class Utils {
         byte[] buffer = new byte[4096];
         boolean overrideEnabled = false;
         
-        Process su = Runtime.getRuntime().exec("su");
-        DataOutputStream outputStream = new DataOutputStream(su.getOutputStream());
-        
-        outputStream.writeBytes("sqlite3 " + DeviceSettings.GSF_DB_FILE + " \"UPDATE " + DeviceSettings.GSF_OVERRIDES_TABLE + " SET value='" + Boolean.toString(overrideEnabled) + "' WHERE name='" + name + "';\"\n");
-        
-        outputStream = terminateApps(outputStream);
-        outputStream.writeBytes("exit\n");
-        outputStream.flush();
-        su.waitFor();
+        try {
+            Process su = Runtime.getRuntime().exec("su");
+            DataOutputStream outputStream = new DataOutputStream(su.getOutputStream());
+            
+            outputStream.writeBytes("sqlite3 " + DeviceSettings.GSF_DB_FILE + " \"UPDATE " + DeviceSettings.GSF_OVERRIDES_TABLE + " SET value='" + Boolean.toString(overrideEnabled) + "' WHERE name='" + name + "';\"\n");
+            
+            outputStream = terminateApps(outputStream);
+            outputStream.writeBytes("exit\n");
+            outputStream.flush();
+            su.waitFor();
+        } catch (IOException e) {
+        } catch (InterruptedException e) {
+        }
         
         return overrideEnabled;
      }
