@@ -24,6 +24,8 @@ import java.io.FileInputStream;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.IOException;
+import java.io.DataOutputStream;
+import java.lang.Process;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Context;
@@ -80,6 +82,165 @@ public class Utils {
     public static void writeColor(String filename, int value) {
         writeValue(filename, String.valueOf((long) value * 2));
     }
+    
+    /**
+     * Check if mirroring is supported.
+     *
+     */
+    public boolean mirroringIsSupported() {
+        try {
+            File submixFile = new File(DeviceSettings.SUBMIX_FILE);
+            
+            if (submixFile.exists()){
+                return true;
+            }
+        } catch (IOException e) {
+        }
+        
+        return false;
+    }
+    
+    /**
+     * Initialize GSFDB for Chromecast.
+     */
+    public static boolean initializeGSFDB() {
+        int bytesRead = 0;
+        byte[] buffer = new byte[4096];
+        boolean gsfMirroringEnabledExists = false;
+        boolean gsfRemoteDisplayEnabledExists = false;
+        
+        Process su = Runtime.getRuntime().exec("su");
+        DataOutputStream outputStream = new DataOutputStream(su.getOutputStream());
+        InputStream inputStream = su.getInputStream();
+        
+        outputStream.writeBytes("sqlite3 " + DeviceSettings.GSF_DB_FILE + " \"SELECT count(name) FROM " . DeviceSettings.GSF_OVERRIDES_TABLE + " WHERE name='" + DeviceSettings.GSF_MIRRORING_ENABLED + "';\"\n");
+        
+        while (inputStream.available() <= 0) {
+            try { Thread.sleep(3000); } catch(Exception ex) {}
+        }
+
+        while (inputStream.available() > 0) {
+            bytesRead = inputStream.read(buffer);
+            if ( bytesRead <= 0 ) break;
+            String seg = new String(buffer,0,bytesRead);   
+            gsfMirroringEnabledExists = seg.equals("0") ? false : (seg.equals("1") ? true : false);
+        }
+        
+        outputStream.writeBytes("exit\n");
+        outputStream.flush();
+        su.waitFor();
+        
+        bytesRead = 0;
+        buffer = new byte[4096];
+        su = Runtime.getRuntime().exec("su");
+        outputStream = new DataOutputStream(su.getOutputStream());
+        inputStream = su.getInputStream();
+        
+        outputStream.writeBytes("sqlite3 " + DeviceSettings.GSF_DB_FILE + " \"SELECT count(name) FROM " + DeviceSettings.GSF_OVERRIDES_TABLE + " WHERE name='" + DeviceSettings.GSF_REMOTE_DISPLAY_ENABLED + "';\"\n");
+        
+        while (inputStream.available() <= 0) {
+            try {
+                Thread.sleep(3000);
+            } catch (Exception ex) {
+            }
+        }
+
+        while (inputStream.available() > 0) {
+            bytesRead = inputStream.read(buffer);
+            if (bytesRead <= 0) 
+                break;
+            String seg = new String(buffer,0,bytesRead);   
+            gsfRemoteDisplayEnabledExists = seg.equals("0") ? false : (seg.equals("1") ? true : false);
+        }
+        
+        outputStream.writeBytes("exit\n");
+        outputStream.flush();
+        su.waitFor();
+        
+        if (!gsfMirroringEnabledExists || !gsfRemoteDisplayEnabledExists) {
+            su = Runtime.getRuntime().exec("su");
+            outputStream = new DataOutputStream(su.getOutputStream());
+        }
+        
+        if (!gsfMirroringEnabledExists) {
+            outputStream.writeBytes("sqlite3 " + DeviceSettings.GSF_DB_FILE + " \"INSERT INTO " + DeviceSettings.GSF_OVERRIDES_TABLE +" (name, value) VALUES ('" + DeviceSettings.GSF_MIRRORING_ENABLED + "', 'false');\"\n");
+        }
+        
+        if (!gsfRemoteDisplayEnabledExists) {
+            outputStream.writeBytes("sqlite3 " + DeviceSettings.GSF_DB_FILE + " \"INSERT INTO " + DeviceSettings.GSF_OVERRIDES_TABLE +" (name, value) VALUES ('" + DeviceSettings.GSF_REMOTE_DISPLAY_ENABLED + "', 'false');\"\n");
+        }
+        
+        if (!gsfMirroringEnabledExists || !gsfRemoteDisplayEnabledExists) {
+            outputStream = terminateApps(outputStream);
+            outputStream.writeBytes("exit\n");
+            outputStream.flush();
+            su.waitFor();
+        }
+     }
+     
+     /**
+      * Check if override is enabled.
+      */
+     public static boolean overrideEnabled(String name) {
+        int bytesRead = 0;
+        byte[] buffer = new byte[4096];
+        boolean overrideEnabled = false;
+        
+        Process su = Runtime.getRuntime().exec("su");
+        DataOutputStream outputStream = new DataOutputStream(su.getOutputStream());
+        InputStream inputStream = su.getInputStream();
+        
+        outputStream.writeBytes("sqlite3 " + DeviceSettings.GSF_DB_FILE + " \"SELECT value FROM " . DeviceSettings.GSF_OVERRIDES_TABLE + " WHERE name='" + name + "';\"\n");
+        
+        while (inputStream.available() <= 0) {
+            try { Thread.sleep(3000); } catch(Exception ex) {}
+        }
+
+        while (inputStream.available() > 0) {
+            bytesRead = inputStream.read(buffer);
+            if ( bytesRead <= 0 ) break;
+            String seg = new String(buffer,0,bytesRead);   
+            overrideEnabled = seg.equals("false") ? false : (seg.equals("true") ? true : false);
+        }
+        
+        outputStream.writeBytes("exit\n");
+        outputStream.flush();
+        su.waitFor();
+        
+        return overrideEnabled;
+     }
+     
+     /**
+     * Set override value.
+     */
+     public static boolean setOverride(String name, boolean enabled) {
+        int bytesRead = 0;
+        byte[] buffer = new byte[4096];
+        boolean overrideEnabled = false;
+        
+        Process su = Runtime.getRuntime().exec("su");
+        DataOutputStream outputStream = new DataOutputStream(su.getOutputStream());
+        
+        outputStream.writeBytes("sqlite3 " + DeviceSettings.GSF_DB_FILE + " \"UPDATE " . DeviceSettings.GSF_OVERRIDES_TABLE + " SET value='" + enabled.toString().equals("true") + "' WHERE name='" + name + "';\"\n");
+        
+        outputStream = terminateApps(outputStream);
+        outputStream.writeBytes("exit\n");
+        outputStream.flush();
+        su.waitFor();
+        
+        return overrideEnabled;
+     }
+     
+     /**
+     * Add force-stop commands to outputStream after changing override value.
+     */
+     public static DataOutputStream terminateApps(OutputStream outputStream) {
+        outputStream.writeBytes("am force-stop " + DeviceSettings.GSF_PACKAGE + "\n");
+        outputStream.writeBytes("am force-stop " + DeviceSettings.GMS_PACKAGE + "\n");
+        outputStream.writeBytes("am force-stop " + DeviceSettings.CHROMECAST_PACKAGE + "\n");
+        
+        return outputStream;
+     }
 
     /**
      * Check if the specified file exists.

@@ -42,12 +42,21 @@ public class DeviceSettings extends FragmentActivity {
     public static final String KEY_USE_GYRO_CALIBRATION = "use_gyro_calibration";
     public static final String KEY_CALIBRATE_GYRO = "calibrate_gyro";
     public static final String KEY_TOUCHSCREEN_SENSITIVITY = "touchscreen_sensitivity";
+    public static final String KEY_MIRRORING = "mirroring_enabled";
+    public static final String KEY_REMOTE_DISPLAY = "remote_display_enabled";
     public static final String KEY_TOUCHKEY_LIGHT = "touchkey_light";
     public static final String KEY_SENSORS_MOTORS_CATEGORY = "sensors_motors_category";
     public static final String KEY_TOUCHKEY_BLN = "touchkey_bln";
     public static final String KEY_TOUCHKEY_BLN_OFF = "touchkey_bln_off";
     public static final String KEY_TOUCHKEY_BLN_INTERVAL = "touchkey_bln_interval";
     public static final String KEY_TOUCHKEY_BLN_TIMEOUT = "touchkey_bln_timeout";
+    public static final String GSF_DB_FILE = "/data/data/com.google.android.gsf/databases/gservices.db";
+    public static final String GSF_OVERRIDES_TABLE = "overrides";
+    public static final String GSF_MIRRORING_ENABLED = "gms:cast:mirroring_enabled";
+    public static final String GSF_REMOTE_DISPLAY_ENABLED = "gms:cast:remote_display_enabled";
+    public static final String GSF_PACKAGE = "com.google.android.gsf";
+    public static final String GMS_PACKAGE = "com.google.android.gms";
+    public static final String CHROMECAST_PACKAGE = "com.google.android.apps.chromecast.app";
 
     ViewPager mViewPager;
     TabsAdapter mTabsAdapter;

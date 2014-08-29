@@ -43,4 +43,19 @@
                 android:entryValues="@array/touchscreen_sensitivity_entries_values"
                 android:defaultValue="50" />
     </PreferenceCategory>
+    <PreferenceCategory
+                android:title="@string/screencast_subcat_title">
+    <!-- Mirroring Enabled -->
+    <CheckBoxPreference
+                android:key="mirroring_enabled"
+                android:title="@string/mirroring_title_head"
+                android:summary="@string/mirroring_summary_head"
+                android:defaultValue="false" />
+    <!-- Remote Display Enabled -->
+    <CheckBoxPreference
+                android:key="remote_display_enabled"
+                android:title="@string/remote_display_title_head"
+                android:summary="@string/remote_display_summary_head"
+                android:defaultValue="false" />
+    </PreferenceCategory>
 </PreferenceScreen>

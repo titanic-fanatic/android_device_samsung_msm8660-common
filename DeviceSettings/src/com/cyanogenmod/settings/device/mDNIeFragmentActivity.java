@@ -17,21 +17,28 @@
 package com.cyanogenmod.settings.device;
 
 import android.os.Bundle;
+import android.preference.CheckBoxPreference;
+import android.preference.Preference.OnPreferenceChangeListener;
 import android.preference.PreferenceFragment;
+import com.cyanogenmod.settings.device.Utils;
 import com.cyanogenmod.settings.device.R;
 
-public class mDNIeFragmentActivity extends PreferenceFragment {
+public class mDNIeFragmentActivity extends PreferenceFragment implements OnPreferenceChangeListener {
 
     private mDNIeScenario mmDNIeScenario;
     private mDNIeMode mmDNIeMode;
     private mDNIeOutdoor mmDNIeOutdoor;
     private TouchscreenSensitivity mTouchscreenSensitivity;
+    private CheckBoxPreference mMirroring;
+    private CheckBoxPreference mRemoteDisplay;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
         addPreferencesFromResource(R.xml.mdnie_preferences);
+        
+        initializeGSFDB();
 
         mmDNIeScenario = (mDNIeScenario) findPreference(DeviceSettings.KEY_MDNIE_SCENARIO);
         mmDNIeScenario.setEnabled(mDNIeScenario.isSupported());
@@ -44,6 +51,33 @@ public class mDNIeFragmentActivity extends PreferenceFragment {
 
         mTouchscreenSensitivity = (TouchscreenSensitivity) findPreference(DeviceSettings.KEY_TOUCHSCREEN_SENSITIVITY);
         mTouchscreenSensitivity.setEnabled(mTouchscreenSensitivity.isSupported());
+        
+        mMirroring = (CheckBoxPreference) findPreference(DeviceSettings.KEY_MIRRORING);
+        mMirroring.setEnabled(mirroringIsSupported());
+        mMirroring.setChecked(overrideEnabled(DeviceSettings.GSF_MIRRORING_ENABLED));
+        mMirroring.setOnPreferenceChangeListener(this);
+        
+        mRemoteDisplay = (CheckBoxPreference) findPreference(DeviceSettings.KEY_REMOTE_DISPLAY);
+        mRemoteDisplay.setEnabled(mirroringIsSupported());
+        mRemoteDisplay.setChecked(overrideEnabled(DeviceSettings.GSF_REMOTE_DISPLAY_ENABLED));
+        mRemoteDisplay.setOnPreferenceChangeListener(this);
+    }
+    
+    @Override
+    public boolean onPreferenceChange(Preference preference, Object newValue) {
+        final String key = preference.getKey();
+        final boolean checkboxEnabled = newValue.toString().equals("true");
+        
+        if (key.equals(DeviceSettings.KEY_MIRRORING) {
+            setOverride(DeviceSettings.GSF_MIRRORING_ENABLED, checkboxEnabled);
+            return true;
+        }
+        else if (key.equals(DeviceSettings.KEY_REMOTE_DISPLAY) {
+            setOverride(DeviceSettings.GSF_REMOTE_DISPLAY_ENABLED, checkboxEnabled);
+            return true;
+        }
+        
+        return false;
     }
 
 }
