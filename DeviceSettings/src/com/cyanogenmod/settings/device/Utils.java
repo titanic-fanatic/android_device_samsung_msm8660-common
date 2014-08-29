@@ -245,9 +245,13 @@ public class Utils {
      * Add force-stop commands to outputStream after changing override value.
      */
      public static DataOutputStream terminateApps(DataOutputStream outputStream) {
-        outputStream.writeBytes("am force-stop " + DeviceSettings.GSF_PACKAGE + "\n");
-        outputStream.writeBytes("am force-stop " + DeviceSettings.GMS_PACKAGE + "\n");
-        outputStream.writeBytes("am force-stop " + DeviceSettings.CHROMECAST_PACKAGE + "\n");
+        try {
+            outputStream.writeBytes("am force-stop " + DeviceSettings.GSF_PACKAGE + "\n");
+            outputStream.writeBytes("am force-stop " + DeviceSettings.GMS_PACKAGE + "\n");
+            outputStream.writeBytes("am force-stop " + DeviceSettings.CHROMECAST_PACKAGE + "\n");
+        } catch (IOException e) {
+        } catch (InterruptedException e) {
+        }
         
         return outputStream;
      }
