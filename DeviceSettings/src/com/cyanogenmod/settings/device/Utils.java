@@ -25,6 +25,7 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.IOException;
 import java.io.DataOutputStream;
+import java.lang.InterruptedException;
 import java.lang.Process;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
@@ -88,13 +89,10 @@ public class Utils {
      *
      */
     public static boolean mirroringIsSupported() {
-        try {
-            File submixFile = new File(DeviceSettings.SUBMIX_FILE);
-            
-            if (submixFile.exists()){
-                return true;
-            }
-        } catch (IOException e) {
+        File submixFile = new File(DeviceSettings.SUBMIX_FILE);
+        
+        if (submixFile.exists()){
+            return true;
         }
         
         return false;
@@ -103,78 +101,82 @@ public class Utils {
     /**
      * Initialize GSFDB for Chromecast.
      */
-    public static boolean initializeGSFDB() {
+    public static void initializeGSFDB() {
         int bytesRead = 0;
         byte[] buffer = new byte[4096];
         boolean gsfMirroringEnabledExists = false;
         boolean gsfRemoteDisplayEnabledExists = false;
         
-        Process su = Runtime.getRuntime().exec("su");
-        DataOutputStream outputStream = new DataOutputStream(su.getOutputStream());
-        InputStream inputStream = su.getInputStream();
-        
-        outputStream.writeBytes("sqlite3 " + DeviceSettings.GSF_DB_FILE + " \"SELECT count(name) FROM " + DeviceSettings.GSF_OVERRIDES_TABLE + " WHERE name='" + DeviceSettings.GSF_MIRRORING_ENABLED + "';\"\n");
-        
-        while (inputStream.available() <= 0) {
-            try { Thread.sleep(3000); } catch(Exception ex) {}
-        }
-
-        while (inputStream.available() > 0) {
-            bytesRead = inputStream.read(buffer);
-            if ( bytesRead <= 0 ) break;
-            String seg = new String(buffer,0,bytesRead);   
-            gsfMirroringEnabledExists = seg.equals("0") ? false : (seg.equals("1") ? true : false);
-        }
-        
-        outputStream.writeBytes("exit\n");
-        outputStream.flush();
-        su.waitFor();
-        
-        bytesRead = 0;
-        buffer = new byte[4096];
-        su = Runtime.getRuntime().exec("su");
-        outputStream = new DataOutputStream(su.getOutputStream());
-        inputStream = su.getInputStream();
-        
-        outputStream.writeBytes("sqlite3 " + DeviceSettings.GSF_DB_FILE + " \"SELECT count(name) FROM " + DeviceSettings.GSF_OVERRIDES_TABLE + " WHERE name='" + DeviceSettings.GSF_REMOTE_DISPLAY_ENABLED + "';\"\n");
-        
-        while (inputStream.available() <= 0) {
-            try {
-                Thread.sleep(3000);
-            } catch (Exception ex) {
+        try {
+            Process su = Runtime.getRuntime().exec("su");
+            DataOutputStream outputStream = new DataOutputStream(su.getOutputStream());
+            InputStream inputStream = su.getInputStream();
+            
+            outputStream.writeBytes("sqlite3 " + DeviceSettings.GSF_DB_FILE + " \"SELECT count(name) FROM " + DeviceSettings.GSF_OVERRIDES_TABLE + " WHERE name='" + DeviceSettings.GSF_MIRRORING_ENABLED + "';\"\n");
+            
+            while (inputStream.available() <= 0) {
+                try { Thread.sleep(3000); } catch(Exception ex) {}
             }
-        }
 
-        while (inputStream.available() > 0) {
-            bytesRead = inputStream.read(buffer);
-            if (bytesRead <= 0) 
-                break;
-            String seg = new String(buffer,0,bytesRead);   
-            gsfRemoteDisplayEnabledExists = seg.equals("0") ? false : (seg.equals("1") ? true : false);
-        }
-        
-        outputStream.writeBytes("exit\n");
-        outputStream.flush();
-        su.waitFor();
-        
-        if (!gsfMirroringEnabledExists || !gsfRemoteDisplayEnabledExists) {
-            su = Runtime.getRuntime().exec("su");
-            outputStream = new DataOutputStream(su.getOutputStream());
-        }
-        
-        if (!gsfMirroringEnabledExists) {
-            outputStream.writeBytes("sqlite3 " + DeviceSettings.GSF_DB_FILE + " \"INSERT INTO " + DeviceSettings.GSF_OVERRIDES_TABLE +" (name, value) VALUES ('" + DeviceSettings.GSF_MIRRORING_ENABLED + "', 'false');\"\n");
-        }
-        
-        if (!gsfRemoteDisplayEnabledExists) {
-            outputStream.writeBytes("sqlite3 " + DeviceSettings.GSF_DB_FILE + " \"INSERT INTO " + DeviceSettings.GSF_OVERRIDES_TABLE +" (name, value) VALUES ('" + DeviceSettings.GSF_REMOTE_DISPLAY_ENABLED + "', 'false');\"\n");
-        }
-        
-        if (!gsfMirroringEnabledExists || !gsfRemoteDisplayEnabledExists) {
-            outputStream = terminateApps(outputStream);
+            while (inputStream.available() > 0) {
+                bytesRead = inputStream.read(buffer);
+                if ( bytesRead <= 0 ) break;
+                String seg = new String(buffer,0,bytesRead);   
+                gsfMirroringEnabledExists = seg.equals("0") ? false : (seg.equals("1") ? true : false);
+            }
+            
             outputStream.writeBytes("exit\n");
             outputStream.flush();
             su.waitFor();
+            
+            bytesRead = 0;
+            buffer = new byte[4096];
+            su = Runtime.getRuntime().exec("su");
+            outputStream = new DataOutputStream(su.getOutputStream());
+            inputStream = su.getInputStream();
+            
+            outputStream.writeBytes("sqlite3 " + DeviceSettings.GSF_DB_FILE + " \"SELECT count(name) FROM " + DeviceSettings.GSF_OVERRIDES_TABLE + " WHERE name='" + DeviceSettings.GSF_REMOTE_DISPLAY_ENABLED + "';\"\n");
+            
+            while (inputStream.available() <= 0) {
+                try {
+                    Thread.sleep(3000);
+                } catch (Exception ex) {
+                }
+            }
+
+            while (inputStream.available() > 0) {
+                bytesRead = inputStream.read(buffer);
+                if (bytesRead <= 0) 
+                    break;
+                String seg = new String(buffer,0,bytesRead);   
+                gsfRemoteDisplayEnabledExists = seg.equals("0") ? false : (seg.equals("1") ? true : false);
+            }
+            
+            outputStream.writeBytes("exit\n");
+            outputStream.flush();
+            su.waitFor();
+            
+            if (!gsfMirroringEnabledExists || !gsfRemoteDisplayEnabledExists) {
+                su = Runtime.getRuntime().exec("su");
+                outputStream = new DataOutputStream(su.getOutputStream());
+            }
+            
+            if (!gsfMirroringEnabledExists) {
+                outputStream.writeBytes("sqlite3 " + DeviceSettings.GSF_DB_FILE + " \"INSERT INTO " + DeviceSettings.GSF_OVERRIDES_TABLE +" (name, value) VALUES ('" + DeviceSettings.GSF_MIRRORING_ENABLED + "', 'false');\"\n");
+            }
+            
+            if (!gsfRemoteDisplayEnabledExists) {
+                outputStream.writeBytes("sqlite3 " + DeviceSettings.GSF_DB_FILE + " \"INSERT INTO " + DeviceSettings.GSF_OVERRIDES_TABLE +" (name, value) VALUES ('" + DeviceSettings.GSF_REMOTE_DISPLAY_ENABLED + "', 'false');\"\n");
+            }
+            
+            if (!gsfMirroringEnabledExists || !gsfRemoteDisplayEnabledExists) {
+                outputStream = terminateApps(outputStream);
+                outputStream.writeBytes("exit\n");
+                outputStream.flush();
+                su.waitFor();
+            }
+        } catch (IOException e) {
+        } catch (InterruptedException e) {
         }
      }
      
