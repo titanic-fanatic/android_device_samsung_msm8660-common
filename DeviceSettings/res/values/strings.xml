@@ -31,7 +31,7 @@
     <!-- Screencast Settings -->
     <string name="screencast_subcat_title">Screencasting</string>
     <string name="mirroring_title_head">Mirroring Enabled</string>
-    <string name="mirroring_summary_head">Enable display mirroring in Goole Services Framework</string>
+    <string name="mirroring_summary_head">Enable display mirroring in Google Services Framework</string>
     <string name="remote_display_title_head">Remote Display Enabled</string>
     <string name="remote_display_summary_head">Enable remote display in Google Services Framework</string>
 

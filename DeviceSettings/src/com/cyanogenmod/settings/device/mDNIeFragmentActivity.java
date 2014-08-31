@@ -16,6 +16,7 @@
 
 package com.cyanogenmod.settings.device;
 
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.preference.CheckBoxPreference;
 import android.preference.Preference;
@@ -38,8 +39,6 @@ public class mDNIeFragmentActivity extends PreferenceFragment implements OnPrefe
         super.onCreate(savedInstanceState);
 
         addPreferencesFromResource(R.xml.mdnie_preferences);
-        
-        Utils.initializeGSFDB();
 
         mmDNIeScenario = (mDNIeScenario) findPreference(DeviceSettings.KEY_MDNIE_SCENARIO);
         mmDNIeScenario.setEnabled(mDNIeScenario.isSupported());
@@ -53,14 +52,16 @@ public class mDNIeFragmentActivity extends PreferenceFragment implements OnPrefe
         mTouchscreenSensitivity = (TouchscreenSensitivity) findPreference(DeviceSettings.KEY_TOUCHSCREEN_SENSITIVITY);
         mTouchscreenSensitivity.setEnabled(mTouchscreenSensitivity.isSupported());
         
+        new cmdTask("init", false).execute();
+        
         mMirroring = (CheckBoxPreference) findPreference(DeviceSettings.KEY_MIRRORING);
         mMirroring.setEnabled(Utils.mirroringIsSupported());
-        mMirroring.setChecked(Utils.overrideEnabled(DeviceSettings.GSF_MIRRORING_ENABLED));
+        new cmdTask("overrideMirrorEnabled", false).execute();
         mMirroring.setOnPreferenceChangeListener(this);
         
         mRemoteDisplay = (CheckBoxPreference) findPreference(DeviceSettings.KEY_REMOTE_DISPLAY);
         mRemoteDisplay.setEnabled(Utils.mirroringIsSupported());
-        mRemoteDisplay.setChecked(Utils.overrideEnabled(DeviceSettings.GSF_REMOTE_DISPLAY_ENABLED));
+        new cmdTask("overrideRemoteEnabled", false).execute();
         mRemoteDisplay.setOnPreferenceChangeListener(this);
     }
     
@@ -70,15 +71,68 @@ public class mDNIeFragmentActivity extends PreferenceFragment implements OnPrefe
         final boolean checkboxEnabled = newValue.toString().equals("true");
         
         if (key.equals(DeviceSettings.KEY_MIRRORING)) {
-            Utils.setOverride(DeviceSettings.GSF_MIRRORING_ENABLED, checkboxEnabled);
+            new cmdTask("toggleMirrorEnabled", checkboxEnabled).execute();
             return true;
         }
         else if (key.equals(DeviceSettings.KEY_REMOTE_DISPLAY)) {
-            Utils.setOverride(DeviceSettings.GSF_REMOTE_DISPLAY_ENABLED, checkboxEnabled);
+            new cmdTask("toggleRemoteEnabled", checkboxEnabled).execute();
             return true;
         }
         
         return false;
+    }
+    
+    public void setMirrorEnabled () {
+        mMirroring.setChecked(Utils.overrideEnabled(DeviceSettings.GSF_MIRRORING_ENABLED));
+    }
+    
+    public void setRemoteEnabled () {
+        mRemoteDisplay.setChecked(Utils.overrideEnabled(DeviceSettings.GSF_REMOTE_DISPLAY_ENABLED));
+    }
+    
+    private class cmdTask extends AsyncTask<String, Void, String> {
+        String task;
+        boolean enabled;
+    
+        public cmdTask (String task, boolean enabled) {
+            this.task = task;
+            this.enabled = enabled;
+        }
+
+        @Override
+        protected String doInBackground(String... params) {
+            if (task.equals("init")) {
+                Utils.initializeGSFDB();
+            }
+            else if (task.equals("overrideMirrorEnabled")) {
+                setMirrorEnabled();
+            }
+            else if (task.equals("overrideRemoteEnabled")) {
+                setRemoteEnabled();
+            }
+            else if (task.equals("toggleMirrorEnabled")) {
+                Utils.setOverride(DeviceSettings.GSF_MIRRORING_ENABLED, enabled);
+            }
+            else if (task.equals("toggleRemoteEnabled")) {
+                Utils.setOverride(DeviceSettings.GSF_REMOTE_DISPLAY_ENABLED, enabled);
+            }
+            return "Executed";
+        }
+
+        @Override
+        protected void onPostExecute(String result) {
+            
+        }
+
+        @Override
+        protected void onPreExecute() {
+            
+        }
+
+        @Override
+        protected void onProgressUpdate(Void... values) {
+            
+        }
     }
 
 }
