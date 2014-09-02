@@ -85,14 +85,14 @@ public class mDNIeFragmentActivity extends PreferenceFragment implements OnPrefe
     private class cmdTask extends AsyncTask<String, Void, String> {
         String task;
         boolean enabled;
+        
+        public cmdTask(String task) {
+            this(task, false);
+        }
     
-        public cmdTask (String task, boolean enabled) {
+        public cmdTask(String task, boolean enabled) {
             this.task = task;
             this.enabled = enabled;
-        }
-        
-        public cmdTask (String task) {
-            cmdTask(task, false);
         }
 
         @Override
