@@ -89,7 +89,7 @@ public class Utils {
     }
     
     /**
-     * Check if mirroring is supported.
+     * Check if screencast mirroring is supported.
      *
      */
     public static boolean mirroringIsSupported() {
@@ -103,7 +103,7 @@ public class Utils {
     }
     
     /**
-     * Initialize GSFDB for Chromecast.
+     * Initialize GSFDB for screencast.
      */
     public static void initializeGSFDB() {
         boolean gsfMirroringEnabledExists = false;
@@ -151,19 +151,17 @@ public class Utils {
         return result;
      }
      
-     public static String[] runAsRoot(String[] cmds, boolean terminateApps, boolean readVal) throws Exception {
+     public static String[] runAsRoot(String[] cmds, boolean terminateApps,
+        boolean readVal) throws Exception {
          Process process = Runtime.getRuntime().exec("su");
          DataOutputStream outputStream = new DataOutputStream(process.getOutputStream());
          InputStream inputStream = process.getInputStream();
          String[] results = new String[cmds.length];
          
-         Log.e(DEVICE_SETTINGS_TAG, "***** START DEBUG *****");
-         
          int i = 0;
          for (String tmpCmd : cmds) {
              String result = "";
                  
-             Log.e(DEVICE_SETTINGS_TAG, "query: " + cmds[i]);
              
              if (!tmpCmd.equals("")) {
                  outputStream.writeBytes(tmpCmd+"\n");
@@ -187,15 +185,11 @@ public class Utils {
                         }
                      }
                      
-                     Log.e(DEVICE_SETTINGS_TAG, "result: " + result);
-                     Log.e(DEVICE_SETTINGS_TAG, "result length: " + result.length());
                      results[i] = result;
                  }
              }
              i++;
          }
-         
-         Log.e(DEVICE_SETTINGS_TAG, "***** END DEBUG *****");
              
          if (terminateApps) {
             outputStream.writeBytes("am force-stop " + DeviceSettings.GSF_PACKAGE + "\n");
@@ -211,7 +205,7 @@ public class Utils {
      }
      
      /**
-      * Check if override is enabled.
+      * Check if screencast override is enabled.
       */
      public static boolean overrideEnabled(String name) {
         String[] cmds = {"sqlite3 " + DeviceSettings.GSF_DB_FILE + " \"SELECT value FROM " + DeviceSettings.GSF_OVERRIDES_TABLE + " WHERE name='" + name + "';\""};
@@ -226,7 +220,7 @@ public class Utils {
      }
      
      /**
-     * Set override value.
+     * Set screencast override value.
      */
      public static boolean setOverride(String name, boolean enabled) {
         String[] cmds = {"sqlite3 " + DeviceSettings.GSF_DB_FILE + " \"UPDATE " + DeviceSettings.GSF_OVERRIDES_TABLE + " SET value='" + Boolean.toString(enabled) + "' WHERE name='" + name + "';\""};
@@ -238,20 +232,6 @@ public class Utils {
         }
         
         return true;
-     }
-     
-     /**
-     * Add force-stop commands to outputStream after changing override value.
-     */
-     public static DataOutputStream terminateApps(DataOutputStream outputStream) {
-        try {
-            outputStream.writeBytes("am force-stop " + DeviceSettings.GSF_PACKAGE + "\n");
-            outputStream.writeBytes("am force-stop " + DeviceSettings.GMS_PACKAGE + "\n");
-            outputStream.writeBytes("am force-stop " + DeviceSettings.CHROMECAST_PACKAGE + "\n");
-        } catch (IOException e) {
-        }
-        
-        return outputStream;
      }
 
     /**

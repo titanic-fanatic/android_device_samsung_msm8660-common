@@ -52,16 +52,16 @@ public class mDNIeFragmentActivity extends PreferenceFragment implements OnPrefe
         mTouchscreenSensitivity = (TouchscreenSensitivity) findPreference(DeviceSettings.KEY_TOUCHSCREEN_SENSITIVITY);
         mTouchscreenSensitivity.setEnabled(mTouchscreenSensitivity.isSupported());
         
-        new cmdTask("init", false).execute();
+        new cmdTask("init").execute();
         
         mMirroring = (CheckBoxPreference) findPreference(DeviceSettings.KEY_MIRRORING);
         mMirroring.setEnabled(Utils.mirroringIsSupported());
-        new cmdTask("overrideMirrorEnabled", false).execute();
+        new cmdTask(DeviceSettings.KEY_MIRRORING_UI_TASK).execute();
         mMirroring.setOnPreferenceChangeListener(this);
         
         mRemoteDisplay = (CheckBoxPreference) findPreference(DeviceSettings.KEY_REMOTE_DISPLAY);
         mRemoteDisplay.setEnabled(Utils.mirroringIsSupported());
-        new cmdTask("overrideRemoteEnabled", false).execute();
+        new cmdTask(DeviceSettings.KEY_REMOTE_UI_TASK).execute();
         mRemoteDisplay.setOnPreferenceChangeListener(this);
     }
     
@@ -71,23 +71,15 @@ public class mDNIeFragmentActivity extends PreferenceFragment implements OnPrefe
         final boolean checkboxEnabled = newValue.toString().equals("true");
         
         if (key.equals(DeviceSettings.KEY_MIRRORING)) {
-            new cmdTask("toggleMirrorEnabled", checkboxEnabled).execute();
+            new cmdTask(DeviceSettings.KEY_MIRRORING_DB_TASK, checkboxEnabled).execute();
             return true;
         }
         else if (key.equals(DeviceSettings.KEY_REMOTE_DISPLAY)) {
-            new cmdTask("toggleRemoteEnabled", checkboxEnabled).execute();
+            new cmdTask(DeviceSettings.KEY_REMOTE_DB_TASK, checkboxEnabled).execute();
             return true;
         }
         
         return false;
-    }
-    
-    public void setMirrorEnabled () {
-        mMirroring.setChecked(Utils.overrideEnabled(DeviceSettings.GSF_MIRRORING_ENABLED));
-    }
-    
-    public void setRemoteEnabled () {
-        mRemoteDisplay.setChecked(Utils.overrideEnabled(DeviceSettings.GSF_REMOTE_DISPLAY_ENABLED));
     }
     
     private class cmdTask extends AsyncTask<String, Void, String> {
@@ -98,30 +90,36 @@ public class mDNIeFragmentActivity extends PreferenceFragment implements OnPrefe
             this.task = task;
             this.enabled = enabled;
         }
+        
+        public cmdTask (String task) {
+            cmdTask(task, false);
+        }
 
         @Override
         protected String doInBackground(String... params) {
             if (task.equals("init")) {
                 Utils.initializeGSFDB();
             }
-            else if (task.equals("overrideMirrorEnabled")) {
-                setMirrorEnabled();
+            else if (task.equals(DeviceSettings.KEY_MIRRORING_UI_TASK) || task.equals(DeviceSettings.KEY_REMOTE_UI_TASK)) {
+                return task;
             }
-            else if (task.equals("overrideRemoteEnabled")) {
-                setRemoteEnabled();
-            }
-            else if (task.equals("toggleMirrorEnabled")) {
+            else if (task.equals(DeviceSettings.KEY_MIRRORING_DB_TASK)) {
                 Utils.setOverride(DeviceSettings.GSF_MIRRORING_ENABLED, enabled);
             }
-            else if (task.equals("toggleRemoteEnabled")) {
+            else if (task.equals(DeviceSettings.KEY_REMOTE_DB_TASK)) {
                 Utils.setOverride(DeviceSettings.GSF_REMOTE_DISPLAY_ENABLED, enabled);
             }
-            return "Executed";
+            return "";
         }
 
         @Override
         protected void onPostExecute(String result) {
-            
+            if (task.equals(DeviceSettings.KEY_MIRRORING_UI_TASK)) {
+                mMirroring.setChecked(Utils.overrideEnabled(DeviceSettings.GSF_MIRRORING_ENABLED));
+            }
+            else if (task.equals(DeviceSettings.KEY_REMOTE_UI_TASK)) {
+                mRemoteDisplay.setChecked(Utils.overrideEnabled(DeviceSettings.GSF_REMOTE_DISPLAY_ENABLED));
+            }
         }
 
         @Override
