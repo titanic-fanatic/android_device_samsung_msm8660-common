@@ -56,14 +56,9 @@
         <item>1</item>
     </string-array>
 
-    <string-array name="panel_gamma_entries">
-        <item>2.2 (Default)</item>
-        <item>1.9</item>
-    </string-array>
-
-    <string-array name="panel_gamma_entries_values" translatable="false">
-        <item>0</item>
-        <item>1</item>
+    <!-- Gamma calibration descriptors, deliberately empty as string values populated via
+         per-device overlay. Required to build on non-hardware tunable devices -->
+    <string-array name="gamma_descriptors" translatable="false">
     </string-array>
 
     <string-array name="touchscreen_sensitivity_entries">

@@ -22,8 +22,11 @@ import android.preference.CheckBoxPreference;
 import android.preference.Preference;
 import android.preference.Preference.OnPreferenceChangeListener;
 import android.preference.PreferenceFragment;
+import android.preference.PreferenceGroup;
 import com.cyanogenmod.settings.device.Utils;
 import com.cyanogenmod.settings.device.R;
+import com.cyanogenmod.settings.device.DisplayColor;
+import com.cyanogenmod.settings.device.DisplayGamma;
 
 public class mDNIeFragmentActivity extends PreferenceFragment implements OnPreferenceChangeListener {
 
@@ -48,6 +51,20 @@ public class mDNIeFragmentActivity extends PreferenceFragment implements OnPrefe
 
         mmDNIeOutdoor = (mDNIeOutdoor) findPreference(DeviceSettings.KEY_MDNIE_OUTDOOR);
         mmDNIeOutdoor.setEnabled(mDNIeOutdoor.isSupported());
+        
+        final PreferenceGroup calibrationCategory =
+                (PreferenceGroup) findPreference(DisplaySettings.KEY_DISPLAY_CALIBRATION_CATEGORY);
+
+        if (!DisplayColor.isSupported() && !DisplayGamma.isSupported()) {
+            getPreferenceScreen().removePreference(calibrationCategory);
+        } else {
+            if (!DisplayColor.isSupported()) {
+                calibrationCategory.removePreference(findPreference(DisplaySettings.KEY_DISPLAY_COLOR));
+            }
+            if (!DisplayGamma.isSupported()) {
+                calibrationCategory.removePreference(findPreference(DisplaySettings.KEY_DISPLAY_GAMMA));
+            }
+        }
 
         mTouchscreenSensitivity = (TouchscreenSensitivity) findPreference(DeviceSettings.KEY_TOUCHSCREEN_SENSITIVITY);
         mTouchscreenSensitivity.setEnabled(mTouchscreenSensitivity.isSupported());
