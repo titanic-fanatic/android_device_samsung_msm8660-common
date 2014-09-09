@@ -45,7 +45,6 @@ public class DisplaySettings extends FragmentActivity {
     public static final String KEY_REMOTE_UI_TASK = "remoteUITask";
     public static final String KEY_REMOTE_DB_TASK = "remoteDBTask";
     public static final String KEY_TOUCHKEY_LIGHT = "touchkey_light";
-    public static final String KEY_SENSORS_MOTORS_CATEGORY = "sensors_motors_category";
     public static final String KEY_TOUCHKEY_BLN = "touchkey_bln";
     public static final String KEY_TOUCHKEY_BLN_OFF = "touchkey_bln_off";
     public static final String KEY_TOUCHKEY_BLN_INTERVAL = "touchkey_bln_interval";
