@@ -40,6 +40,10 @@ public class DisplaySettings extends FragmentActivity {
     public static final String KEY_TOUCHSCREEN_SENSITIVITY = "touchscreen_sensitivity";
     public static final String KEY_MIRRORING = "mirroring_enabled";
     public static final String KEY_REMOTE_DISPLAY = "remote_display_enabled";
+    public static final String KEY_MIRRORING_UI_TASK = "mirroringUITask";
+    public static final String KEY_MIRRORING_DB_TASK = "mirroringDBTask";
+    public static final String KEY_REMOTE_UI_TASK = "remoteUITask";
+    public static final String KEY_REMOTE_DB_TASK = "remoteDBTask";
     public static final String KEY_TOUCHKEY_LIGHT = "touchkey_light";
     public static final String KEY_SENSORS_MOTORS_CATEGORY = "sensors_motors_category";
     public static final String KEY_TOUCHKEY_BLN = "touchkey_bln";
