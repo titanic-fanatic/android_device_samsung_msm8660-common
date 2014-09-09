@@ -15,23 +15,13 @@
  -->
 <resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
     <string name="app_name">Advanced Settings</string>
-
     <string name="screen_colors_title">Colors</string>
-    <string name="category_mdnie_title">Screen</string>
+    <string name="category_screen_title">Screen</string>
 
     <!-- Hardware tunables - Vibrator intensity -->
     <string name="vibrator_intensity_title">Vibrator intensity</string>
     <string name="vibrator_warning">Values higher than %1$d are not recommended</string>
-    
-    <string name="mdnie_scenario_title_head">Scenario</string>
-    <string name="mdnie_scenario_summary_head">Set the mDNIe Scenario</string>
-    <string name="mdnie_mode_title_head">Mode</string>
-    <string name="mdnie_mode_summary_head">Set the mDNIe Mode</string>
-    <string name="mdnie_negative_title_head">Negative Mode</string>
-    <string name="mdnie_negative_summary_head">Enable/Disable inverted colors</string>
-    <string name="mdnie_outdoor_title_head">Outdoor Mode</string>
-    <string name="mdnie_outdoor_summary_head">Enable/Disable outdoor mode</string>
-    
+
     <!-- Hardware tunables - Color calibration -->
     <string name="color_calibration_title">Color calibration</string>
     <string name="color_calibration_summary">Calibrate on-screen colors</string>
@@ -46,9 +36,9 @@
     <string name="gamma_tuning_contrast">Contrast</string>
     <string name="gamma_tuning_brightness">Brightness</string>
     <string name="gamma_tuning_saturation">Saturation</string>
-    
+
     <!--  Other device settings -->
-    <string name="sensors_motors_title">Vibrator Intensity</string>
+    <string name="sensors_motors_title">Sensors &amp; motors</string>
     <string name="display_calibration_title">Display calibration</string>
     <string name="reset_button">Reset</string>
 
@@ -69,6 +59,9 @@
     <string name="use_gyro_calibration_summary_head">Use the gyroscope calibration values. Do a calibration after checking this!</string>
     <string name="calibrate_gyro_title_head">Calibrate</string>
     <string name="calibrate_gyro_summary_head">Put your phone on a flat surface, and press this to calibrate</string>
+
+    <string name="touchkey_s2w_title_head">Enable Sweep2Wake</string>
+    <string name="touchkey_s2w_summary_head">Sweep the four capacitative keys from left to right to wake the device</string>
 
     <string name="touchkey_subcat_title">Touch key</string>
     <string name="touchkey_light_title_head">Enable keys backlight</string>

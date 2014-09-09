@@ -65,8 +65,8 @@ public class DisplaySettings extends FragmentActivity {
         bar.setTitle(R.string.app_name);
 
         mTabsAdapter = new TabsAdapter(this, mViewPager);
-        mTabsAdapter.addTab(bar.newTab().setText(R.string.category_mdnie_title),
-                mDNIeFragmentActivity.class, null);
+        mTabsAdapter.addTab(bar.newTab().setText(R.string.category_screen_title),
+                ScreenFragmentActivity.class, null);
         mTabsAdapter.addTab(bar.newTab().setText(R.string.category_sensors_title),
                 SensorsFragmentActivity.class, null);
 
