@@ -31,10 +31,14 @@ import com.cyanogenmod.settings.device.R;
 
 import java.util.ArrayList;
 
-public class DisplaySettings extends FragmentActivity {
+public class DeviceSettings extends FragmentActivity {
 
     public static final String SHARED_PREFERENCES_BASENAME = "com.cyanogenmod.settings.device";
     public static final String ACTION_UPDATE_PREFERENCES = "com.cyanogenmod.settings.device.UPDATE";
+    public static final String KEY_MDNIE_SCENARIO = "mdnie_scenario";
+    public static final String KEY_MDNIE_MODE = "mdnie_mode";
+    public static final String KEY_MDNIE_OUTDOOR = "mdnie_outdoor";
+    public static final String KEY_HSPA = "hspa";
     public static final String KEY_USE_GYRO_CALIBRATION = "use_gyro_calibration";
     public static final String KEY_CALIBRATE_GYRO = "calibrate_gyro";
     public static final String KEY_TOUCHSCREEN_SENSITIVITY = "touchscreen_sensitivity";
@@ -54,11 +58,6 @@ public class DisplaySettings extends FragmentActivity {
     public static final String GSF_PACKAGE = "com.google.android.gsf";
     public static final String GMS_PACKAGE = "com.google.android.gms";
     public static final String CHROMECAST_PACKAGE = "com.google.android.apps.chromecast.app";
-    public static final String KEY_DISPLAY_CALIBRATION_CATEGORY = "display_calibration_category";
-    public static final String KEY_DISPLAY_COLOR = "color_calibration";
-    public static final String KEY_DISPLAY_GAMMA = "gamma_tuning";
-    public static final String KEY_SENSORS_MOTORS_CATEGORY = "sensors_motors_category";
-    public static final String KEY_TOUCHKEY_S2W = "touchkey_s2w";
 
     ViewPager mViewPager;
     TabsAdapter mTabsAdapter;
@@ -77,8 +76,8 @@ public class DisplaySettings extends FragmentActivity {
         bar.setTitle(R.string.app_name);
 
         mTabsAdapter = new TabsAdapter(this, mViewPager);
-        mTabsAdapter.addTab(bar.newTab().setText(R.string.category_screen_title),
-                ScreenFragmentActivity.class, null);
+        mTabsAdapter.addTab(bar.newTab().setText(R.string.category_mdnie_title),
+                mDNIeFragmentActivity.class, null);
         mTabsAdapter.addTab(bar.newTab().setText(R.string.category_sensors_title),
                 SensorsFragmentActivity.class, null);
 
