@@ -58,14 +58,14 @@ public class ScreenFragmentActivity extends PreferenceFragment implements OnPref
         
         new cmdTask("init").execute();
         
-        mMirroring = (CheckBoxPreference) findPreference(DeviceSettings.KEY_MIRRORING);
+        mMirroring = (CheckBoxPreference) findPreference(DisplaySettings.KEY_MIRRORING);
         mMirroring.setEnabled(Utils.mirroringIsSupported());
-        new cmdTask(DeviceSettings.KEY_MIRRORING_UI_TASK).execute();
+        new cmdTask(DisplaySettings.KEY_MIRRORING_UI_TASK).execute();
         mMirroring.setOnPreferenceChangeListener(this);
         
-        mRemoteDisplay = (CheckBoxPreference) findPreference(DeviceSettings.KEY_REMOTE_DISPLAY);
+        mRemoteDisplay = (CheckBoxPreference) findPreference(DisplaySettings.KEY_REMOTE_DISPLAY);
         mRemoteDisplay.setEnabled(Utils.mirroringIsSupported());
-        new cmdTask(DeviceSettings.KEY_REMOTE_UI_TASK).execute();
+        new cmdTask(DisplaySettings.KEY_REMOTE_UI_TASK).execute();
         mRemoteDisplay.setOnPreferenceChangeListener(this);
     }
     
@@ -74,12 +74,12 @@ public class ScreenFragmentActivity extends PreferenceFragment implements OnPref
         final String key = preference.getKey();
         final boolean checkboxEnabled = newValue.toString().equals("true");
         
-        if (key.equals(DeviceSettings.KEY_MIRRORING)) {
-            new cmdTask(DeviceSettings.KEY_MIRRORING_DB_TASK, checkboxEnabled).execute();
+        if (key.equals(DisplaySettings.KEY_MIRRORING)) {
+            new cmdTask(DisplaySettings.KEY_MIRRORING_DB_TASK, checkboxEnabled).execute();
             return true;
         }
-        else if (key.equals(DeviceSettings.KEY_REMOTE_DISPLAY)) {
-            new cmdTask(DeviceSettings.KEY_REMOTE_DB_TASK, checkboxEnabled).execute();
+        else if (key.equals(DisplaySettings.KEY_REMOTE_DISPLAY)) {
+            new cmdTask(DisplaySettings.KEY_REMOTE_DB_TASK, checkboxEnabled).execute();
             return true;
         }
         
@@ -104,25 +104,25 @@ public class ScreenFragmentActivity extends PreferenceFragment implements OnPref
             if (task.equals("init")) {
                 Utils.initializeGSFDB();
             }
-            else if (task.equals(DeviceSettings.KEY_MIRRORING_UI_TASK) || task.equals(DeviceSettings.KEY_REMOTE_UI_TASK)) {
+            else if (task.equals(DisplaySettings.KEY_MIRRORING_UI_TASK) || task.equals(DisplaySettings.KEY_REMOTE_UI_TASK)) {
                 return task;
             }
-            else if (task.equals(DeviceSettings.KEY_MIRRORING_DB_TASK)) {
-                Utils.setOverride(DeviceSettings.GSF_MIRRORING_ENABLED, enabled);
+            else if (task.equals(DisplaySettings.KEY_MIRRORING_DB_TASK)) {
+                Utils.setOverride(DisplaySettings.GSF_MIRRORING_ENABLED, enabled);
             }
-            else if (task.equals(DeviceSettings.KEY_REMOTE_DB_TASK)) {
-                Utils.setOverride(DeviceSettings.GSF_REMOTE_DISPLAY_ENABLED, enabled);
+            else if (task.equals(DisplaySettings.KEY_REMOTE_DB_TASK)) {
+                Utils.setOverride(DisplaySettings.GSF_REMOTE_DISPLAY_ENABLED, enabled);
             }
             return "";
         }
 
         @Override
         protected void onPostExecute(String result) {
-            if (task.equals(DeviceSettings.KEY_MIRRORING_UI_TASK)) {
-                mMirroring.setChecked(Utils.overrideEnabled(DeviceSettings.GSF_MIRRORING_ENABLED));
+            if (task.equals(DisplaySettings.KEY_MIRRORING_UI_TASK)) {
+                mMirroring.setChecked(Utils.overrideEnabled(DisplaySettings.GSF_MIRRORING_ENABLED));
             }
-            else if (task.equals(DeviceSettings.KEY_REMOTE_UI_TASK)) {
-                mRemoteDisplay.setChecked(Utils.overrideEnabled(DeviceSettings.GSF_REMOTE_DISPLAY_ENABLED));
+            else if (task.equals(DisplaySettings.KEY_REMOTE_UI_TASK)) {
+                mRemoteDisplay.setChecked(Utils.overrideEnabled(DisplaySettings.GSF_REMOTE_DISPLAY_ENABLED));
             }
         }
 

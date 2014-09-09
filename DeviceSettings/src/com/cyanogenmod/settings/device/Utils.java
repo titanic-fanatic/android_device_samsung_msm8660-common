@@ -93,7 +93,7 @@ public class Utils {
      *
      */
     public static boolean mirroringIsSupported() {
-        File submixFile = new File(DeviceSettings.SUBMIX_FILE);
+        File submixFile = new File(DisplaySettings.SUBMIX_FILE);
         
         if (submixFile.exists()){
             return true;
@@ -108,7 +108,7 @@ public class Utils {
     public static void initializeGSFDB() {
         boolean gsfMirroringEnabledExists = false;
         boolean gsfRemoteDisplayEnabledExists = false;
-        String[] cmds = {"sqlite3 " + DeviceSettings.GSF_DB_FILE + " \"SELECT count(name) FROM " + DeviceSettings.GSF_OVERRIDES_TABLE + " WHERE name='" + DeviceSettings.GSF_MIRRORING_ENABLED + "';\"", "sqlite3 " + DeviceSettings.GSF_DB_FILE + " \"SELECT count(name) FROM " + DeviceSettings.GSF_OVERRIDES_TABLE + " WHERE name='" + DeviceSettings.GSF_REMOTE_DISPLAY_ENABLED + "';\""};
+        String[] cmds = {"sqlite3 " + DisplaySettings.GSF_DB_FILE + " \"SELECT count(name) FROM " + DisplaySettings.GSF_OVERRIDES_TABLE + " WHERE name='" + DisplaySettings.GSF_MIRRORING_ENABLED + "';\"", "sqlite3 " + DisplaySettings.GSF_DB_FILE + " \"SELECT count(name) FROM " + DisplaySettings.GSF_OVERRIDES_TABLE + " WHERE name='" + DisplaySettings.GSF_REMOTE_DISPLAY_ENABLED + "';\""};
         String[] results = new String[cmds.length];
         
         try {
@@ -120,14 +120,14 @@ public class Utils {
         gsfRemoteDisplayEnabledExists = results[1].equals("1") ? true : false;
             
         if (!gsfMirroringEnabledExists) {
-            cmds[0] = "sqlite3 " + DeviceSettings.GSF_DB_FILE + " \"INSERT INTO " + DeviceSettings.GSF_OVERRIDES_TABLE +" (name, value) VALUES ('" + DeviceSettings.GSF_MIRRORING_ENABLED + "', 'false');\"";
+            cmds[0] = "sqlite3 " + DisplaySettings.GSF_DB_FILE + " \"INSERT INTO " + DisplaySettings.GSF_OVERRIDES_TABLE +" (name, value) VALUES ('" + DisplaySettings.GSF_MIRRORING_ENABLED + "', 'false');\"";
         }
         else {
             cmds[0] = "";
         }
         
         if (!gsfRemoteDisplayEnabledExists) {
-            cmds[1] = "sqlite3 " + DeviceSettings.GSF_DB_FILE + " \"INSERT INTO " + DeviceSettings.GSF_OVERRIDES_TABLE +" (name, value) VALUES ('" + DeviceSettings.GSF_REMOTE_DISPLAY_ENABLED + "', 'false');\"";
+            cmds[1] = "sqlite3 " + DisplaySettings.GSF_DB_FILE + " \"INSERT INTO " + DisplaySettings.GSF_OVERRIDES_TABLE +" (name, value) VALUES ('" + DisplaySettings.GSF_REMOTE_DISPLAY_ENABLED + "', 'false');\"";
         }
         else {
             cmds[1] = "";
@@ -192,9 +192,9 @@ public class Utils {
          }
              
          if (terminateApps) {
-            outputStream.writeBytes("am force-stop " + DeviceSettings.GSF_PACKAGE + "\n");
-            outputStream.writeBytes("am force-stop " + DeviceSettings.GMS_PACKAGE + "\n");
-            outputStream.writeBytes("am force-stop " + DeviceSettings.CHROMECAST_PACKAGE + "\n");
+            outputStream.writeBytes("am force-stop " + DisplaySettings.GSF_PACKAGE + "\n");
+            outputStream.writeBytes("am force-stop " + DisplaySettings.GMS_PACKAGE + "\n");
+            outputStream.writeBytes("am force-stop " + DisplaySettings.CHROMECAST_PACKAGE + "\n");
          }
          
          outputStream.writeBytes("exit\n");
@@ -208,7 +208,7 @@ public class Utils {
       * Check if screencast override is enabled.
       */
      public static boolean overrideEnabled(String name) {
-        String[] cmds = {"sqlite3 " + DeviceSettings.GSF_DB_FILE + " \"SELECT value FROM " + DeviceSettings.GSF_OVERRIDES_TABLE + " WHERE name='" + name + "';\""};
+        String[] cmds = {"sqlite3 " + DisplaySettings.GSF_DB_FILE + " \"SELECT value FROM " + DisplaySettings.GSF_OVERRIDES_TABLE + " WHERE name='" + name + "';\""};
         String[] results = new String[1];
         
         try {
@@ -223,7 +223,7 @@ public class Utils {
      * Set screencast override value.
      */
      public static boolean setOverride(String name, boolean enabled) {
-        String[] cmds = {"sqlite3 " + DeviceSettings.GSF_DB_FILE + " \"UPDATE " + DeviceSettings.GSF_OVERRIDES_TABLE + " SET value='" + Boolean.toString(enabled) + "' WHERE name='" + name + "';\""};
+        String[] cmds = {"sqlite3 " + DisplaySettings.GSF_DB_FILE + " \"UPDATE " + DisplaySettings.GSF_OVERRIDES_TABLE + " SET value='" + Boolean.toString(enabled) + "' WHERE name='" + name + "';\""};
         String[] results = new String[cmds.length];
         
         try  {
