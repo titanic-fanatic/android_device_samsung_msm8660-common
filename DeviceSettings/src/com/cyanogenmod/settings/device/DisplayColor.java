@@ -128,13 +128,15 @@ public class DisplayColor extends DialogPreference {
     protected void onBindDialogView(View view) {
         super.onBindDialogView(view);
         
+        LightingColorFilter mWhiteFilter = new LightingColorFilter(Color.BLACK,
+            getContext().getResources().getColor(android.R.color.holo_white_light));
         LightingColorFilter mRedFilter = new LightingColorFilter(Color.BLACK,
             getContext().getResources().getColor(android.R.color.holo_red_light));
         LightingColorFilter mGreenFilter = new LightingColorFilter(Color.BLACK,
             getContext().getResources().getColor(android.R.color.holo_green_light));
         LightingColorFilter mBlueFilter = new LightingColorFilter(Color.BLACK,
             getContext().getResources().getColor(android.R.color.holo_blue_light));
-        LightingColorFilter currentFilter;
+        LightingColorFilter currentFilter = mWhiteFilter;
 
         mOriginalColors = getCurColors();
         mCurrentColors = mOriginalColors.split(" ");
