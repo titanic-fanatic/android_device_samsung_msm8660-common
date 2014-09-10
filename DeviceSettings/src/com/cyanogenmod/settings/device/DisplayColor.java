@@ -149,7 +149,7 @@ public class DisplayColor extends DialogPreference {
             Drawable progressThumb = seekBar.getThumb();
             if (progressDrawable instanceof LayerDrawable) {
                 LayerDrawable ld = (LayerDrawable) progressDrawable;
-                mProgressDrawable = ld.findDrawableByLayerId(android.R.id.progress);
+                progressDrawable = ld.findDrawableByLayerId(android.R.id.progress);
             }
             
             switch (SEEKBAR_ID[i]) {
@@ -165,10 +165,10 @@ public class DisplayColor extends DialogPreference {
             }
             
             if (progressDrawable != null) {
-                mProgressDrawable.setColorFilter(currentFilter);
+                progressDrawable.setColorFilter(currentFilter);
             }
             if (progressThumb != null) {
-                mProgressThumb.setColorFilter(currentFilter);
+                progressThumb.setColorFilter(currentFilter);
             }
         }
     }

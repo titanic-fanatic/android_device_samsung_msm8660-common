@@ -353,7 +353,7 @@ public class DisplayGamma extends DialogPreference {
             Drawable progressThumb = mSeekBar.getThumb();
             if (progressDrawable instanceof LayerDrawable) {
                 LayerDrawable ld = (LayerDrawable) progressDrawable;
-                mProgressDrawable = ld.findDrawableByLayerId(android.R.id.progress);
+                progressDrawable = ld.findDrawableByLayerId(android.R.id.progress);
             }
             
             if (currentLabel.equals(labelRed)) {
@@ -367,10 +367,10 @@ public class DisplayGamma extends DialogPreference {
             }
             
             if (progressDrawable != null) {
-                mProgressDrawable.setColorFilter(currentFilter);
+                progressDrawable.setColorFilter(currentFilter);
             }
             if (progressThumb != null) {
-                mProgressThumb.setColorFilter(currentFilter);
+                progressThumb.setColorFilter(currentFilter);
             }
 
             TextView label = (TextView) container.findViewById(R.id.color_text);
