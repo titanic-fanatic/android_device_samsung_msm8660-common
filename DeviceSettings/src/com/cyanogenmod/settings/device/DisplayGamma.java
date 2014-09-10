@@ -356,13 +356,13 @@ public class DisplayGamma extends DialogPreference {
                 mProgressDrawable = ld.findDrawableByLayerId(android.R.id.progress);
             }
             
-            if (currentLabel.equals(labelRed) {
+            if (currentLabel.equals(labelRed)) {
                 currentFilter = mRedFilter;
             }
-            else if (currentLabel.equals(labelGreen) {
+            else if (currentLabel.equals(labelGreen)) {
                 currentFilter = mGreenFilter;
             }
-            else if (currentLabel.equals(labelBlue) {
+            else if (currentLabel.equals(labelBlue)) {
                 currentFilter = mBlueFilter;
             }
             
