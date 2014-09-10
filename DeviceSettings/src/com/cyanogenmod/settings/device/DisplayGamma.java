@@ -330,13 +330,15 @@ public class DisplayGamma extends DialogPreference {
         private TextView mValue;
 
         public GammaSeekBar(int controlIndex, int colorIndex, ViewGroup container) {
+            LightingColorFilter mWhiteFilter = new LightingColorFilter(Color.BLACK,
+                getContext().getResources().getColor(android.R.color.white));
             LightingColorFilter mRedFilter = new LightingColorFilter(Color.BLACK,
                 getContext().getResources().getColor(android.R.color.holo_red_light));
             LightingColorFilter mGreenFilter = new LightingColorFilter(Color.BLACK,
                 getContext().getResources().getColor(android.R.color.holo_green_light));
             LightingColorFilter mBlueFilter = new LightingColorFilter(Color.BLACK,
                 getContext().getResources().getColor(android.R.color.holo_blue_light));
-            LightingColorFilter currentFilter;
+            LightingColorFilter currentFilter = mWhiteFilter;
             String currentLabel = container.getContext().getString(BAR_COLORS[colorIndex]);
             String labelRed = container.getContext().getString(R.string.color_red_title);
             String labelGreen = container.getContext().getString(R.string.color_green_title);
