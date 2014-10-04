@@ -35,7 +35,7 @@
             android:key="touchkey_s2w"
             android:title="@string/touchkey_s2w_title_head"
             android:summary="@string/touchkey_s2w_summary_head"
-            android:defaultValue="true" />
+            android:defaultValue="false" />
 
         <!-- Touchkey backlight -->
         <CheckBoxPreference
