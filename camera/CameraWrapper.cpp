@@ -199,6 +199,32 @@ static char *camera_fixup_setparams(int id, const char *settings, struct camera_
     ALOGV("%s: isVideo=%d, previewSize=%s, sceneMode=%s\n",
           __FUNCTION__, isVideo, previewSize, sceneMode);
 
+    /* Back Camera */
+    if (id == 0) {
+        // Set focus mode values (infinity is blurry so remove it)
+        //   old overlay: useInfinityFocus=false
+        //
+        // -- this is especially important for panormama mode since Camera2
+        //    always attempts to use infinity in panorama.
+        if (params.get(android::CameraParameters::KEY_SUPPORTED_FOCUS_MODES)) {
+            params.set(android::CameraParameters::KEY_SUPPORTED_FOCUS_MODES,
+                    "auto,macro,fixed,continuous-video,face-priority");
+        }
+    }
+
+    /* Front-Facing Camera */
+    if (id == 1) {
+        // Force 640x480 preview size
+        params.remove(android::CameraParameters::KEY_SUPPORTED_VIDEO_SIZES);
+        params.remove(android::CameraParameters::KEY_PREFERRED_PREVIEW_SIZE_FOR_VIDEO);
+        params.set(android::CameraParameters::KEY_PREFERRED_PREVIEW_SIZE_FOR_VIDEO,
+                "640x480");
+    }
+
+    // Fix rottion mismatch
+    //   - without this pics/videos are upside down or completely corrupted
+    params.set(android::CameraParameters::KEY_ROTATION, "0");
+    
     ALOGV("%s: fixed parameters:", __FUNCTION__);
 #if !LOG_NDEBUG
     params.dump();
