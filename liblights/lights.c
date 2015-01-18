@@ -38,10 +38,9 @@ static int g_enable_touchlight = -1;
 static char const LCD_FILE[]      = "/sys/class/leds/lcd-backlight/brightness";
 static char const BUTTONS_FILE[]  = "/sys/class/misc/sec_touchkey/brightness";
 static char const BUTTONS_POWER[] = "/sys/class/misc/sec_touchkey/enable_disable";
-static char const NOTIFICATION_ENABLED_FILE[] = "/sys/class/misc/backlightnotification/enabled";
-static char const NOTIFICATION_FILE[] = "/sys/class/misc/backlightnotification/notification_led";
-static char const NOTIFICATION_BLINK_FILE[]    = "/sys/class/misc/backlightnotification/blink_control";
-static char const NOTIFICATION_BLINK_RATE_FILE[] = "/sys/class/misc/backlightnotification/blink_interval";
+static char const NOTIFICATION_ENABLED_FILE[] = "/sys/class/misc/bln/blink_enabled";
+static char const NOTIFICATION_BLINK_FILE[]    = "/sys/class/misc/bln/blink_control";
+static char const NOTIFICATION_BLINK_RATE_FILE[] = "/sys/class/misc/bln/blink_interval_ms";
 
 void init_globals(void)
 {
@@ -167,19 +166,14 @@ static int set_light_notifications(struct light_device_t* dev,
             bln_led_control, state->flashOnMS, state->flashOffMS);
 
        pthread_mutex_lock(&g_lock);
-       res = write_int(NOTIFICATION_FILE, bln_led_control);
-
-       if (g_notification_blink_support && bln_led_control && state->flashMode) {
-#if 0
+       if (g_notification_blink_support) {
            if (g_notification_blink_rate_support) {
                char buffer[10];
                snprintf(buffer, sizeof(buffer), "%d %d", state->flashOnMS, state->flashOffMS);
                res = write_str(NOTIFICATION_BLINK_RATE_FILE, buffer);
            }
-#endif
            res = write_int(NOTIFICATION_BLINK_FILE, bln_led_control);
        }
-
        pthread_mutex_unlock(&g_lock);
 
        return res;
