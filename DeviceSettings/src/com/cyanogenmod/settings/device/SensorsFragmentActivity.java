@@ -40,10 +40,10 @@ public class SensorsFragmentActivity extends PreferenceFragment {
     private static final String FILE_USE_GYRO_CALIB = "/sys/class/sec/gsensorcal/calibration";
     private static final String FILE_TOUCHKEY_LIGHT = "/data/.disable_touchlight";
     private static final String FILE_TOUCHKEY_TOGGLE = "/sys/class/misc/sec_touchkey/brightness";
-    private static final String FILE_BLN_TOGGLE = "/sys/class/misc/backlightnotification/enabled";
-    private static final String FILE_BLN_CONTROL = "/sys/class/misc/backlightnotification/blink_control";
-    private static final String FILE_BLN_TIMEOUT = "/sys/class/misc/backlightnotification/blink_timeout";
-    private static final String FILE_BLN_INTERVAL = "/sys/class/misc/backlightnotification/blink_interval";
+    private static final String FILE_BLN_TOGGLE = "/sys/class/misc/enhanced_bln/blink_enabled";
+    private static final String FILE_BLN_CONTROL = "/sys/class/misc/enhanced_bln/blink_control";
+    private static final String FILE_BLN_TIMEOUT = "/sys/class/misc/enhanced_bln/blink_timeout_ms";
+    private static final String FILE_BLN_INTERVAL = "/sys/class/misc/enhanced_bln/blink_interval_ms";
     private static final String FILE_S2W_TOGGLE = "/sys/android_touch/sweep2wake";
     private static final String FILE_S2S_TOGGLE = "/sys/android_touch/sweep2sleep";
     private static final String FILE_S2W_SENSITIVE_TOGGLE = "/sys/android_touch/sweep2wake_sensitive";

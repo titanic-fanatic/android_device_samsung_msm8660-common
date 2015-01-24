@@ -31,7 +31,7 @@ import android.widget.TextView;
 
 public class BlinkInterval extends DialogPreference implements android.widget.Button.OnClickListener {
 
-    private static final String FILE_BLN_INTERVAL = "/sys/class/misc/backlightnotification/blink_interval";
+    private static final String FILE_BLN_INTERVAL = "/sys/class/misc/enhanced_bln/blink_interval_ms";
     private static final int DEFAULT_MIN_VALUE = 1;
     private static final int DEFAULT_MAX_VALUE = 5000;
     private static final int DEFAULT_VALUE = 500;

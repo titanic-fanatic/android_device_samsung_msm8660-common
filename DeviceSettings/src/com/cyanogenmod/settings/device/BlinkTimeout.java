@@ -33,7 +33,7 @@ import android.util.Log;
 public class BlinkTimeout extends DialogPreference implements android.widget.Button.OnClickListener {
 
     private static final String TAG = "GalaxyS2Parts_BlinkTimeout";
-    private static final String FILE_BLN_TIMEOUT = "/sys/class/misc/backlightnotification/blink_timeout";
+    private static final String FILE_BLN_TIMEOUT = "/sys/class/misc/bln/blink_timeout_ms";
     
     private static final int DEFAULT_MIN_VALUE = 1;
     private static final int DEFAULT_MAX_VALUE = 1800;
