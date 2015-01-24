@@ -35,8 +35,8 @@ public class BlinkTimeout extends DialogPreference implements android.widget.But
     private static final String TAG = "GalaxyS2Parts_BlinkTimeout";
     private static final String FILE_BLN_TIMEOUT = "/sys/class/misc/enhanced_bln/blink_timeout_ms";
     
-    private static final int DEFAULT_MIN_VALUE = 1;
-    private static final int DEFAULT_MAX_VALUE = 1800;
+    private static final int DEFAULT_MIN_VALUE = 60;
+    private static final int DEFAULT_MAX_VALUE = 1200;
     private static final int DEFAULT_VALUE = 600;
     
     private NumberPicker mPickerTimeout;
@@ -63,7 +63,7 @@ public class BlinkTimeout extends DialogPreference implements android.widget.But
     
     @Override
     protected void onSetInitialValue(boolean restorePersistedValue, Object defaultValue) {
-        String timeout = Utils.readValue(FILE_BLN_TIMEOUT).replace("\n", "");
+        String timeout = Utils.readValue(FILE_BLN_TIMEOUT).replace("\n", "") / 1000;
         
         Log.e(TAG, "onSetInitialValue: " + timeout);
         
@@ -123,7 +123,7 @@ public class BlinkTimeout extends DialogPreference implements android.widget.But
                 setValue(sTimeout);
                 editor.putString(DisplaySettings.KEY_TOUCHKEY_BLN_TIMEOUT, mValueTimeout);
                 editor.commit();
-                Utils.writeValue(FILE_BLN_TIMEOUT, mValueTimeout + "\n");
+                Utils.writeValue(FILE_BLN_TIMEOUT, (mValueTimeout * 1000) + "\n");
                 
                 Utils.showToast(mContext, mContext.getString(R.string.touchkey_bln_timeout_dialog_success_toast));
             }
