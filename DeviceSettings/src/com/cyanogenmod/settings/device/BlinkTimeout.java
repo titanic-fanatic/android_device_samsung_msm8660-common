@@ -63,7 +63,7 @@ public class BlinkTimeout extends DialogPreference implements android.widget.But
     
     @Override
     protected void onSetInitialValue(boolean restorePersistedValue, Object defaultValue) {
-        String timeout = (Integer.parseInt(Utils.readValue(FILE_BLN_TIMEOUT).replace("\n", "")) / 1000) + '';
+        String timeout = (Integer.parseInt(Utils.readValue(FILE_BLN_TIMEOUT).replace("\n", "")) / 1000) + "";
         
         Log.e(TAG, "onSetInitialValue: " + timeout);
         
