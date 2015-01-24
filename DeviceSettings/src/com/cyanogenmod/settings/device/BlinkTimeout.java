@@ -63,7 +63,7 @@ public class BlinkTimeout extends DialogPreference implements android.widget.But
     
     @Override
     protected void onSetInitialValue(boolean restorePersistedValue, Object defaultValue) {
-        String timeout = Utils.readValue(FILE_BLN_TIMEOUT).replace("\n", "") / 1000;
+        String timeout = (Integer.parseInt(Utils.readValue(FILE_BLN_TIMEOUT).replace("\n", "")) / 1000) + '';
         
         Log.e(TAG, "onSetInitialValue: " + timeout);
         
@@ -123,7 +123,7 @@ public class BlinkTimeout extends DialogPreference implements android.widget.But
                 setValue(sTimeout);
                 editor.putString(DisplaySettings.KEY_TOUCHKEY_BLN_TIMEOUT, mValueTimeout);
                 editor.commit();
-                Utils.writeValue(FILE_BLN_TIMEOUT, (mValueTimeout * 1000) + "\n");
+                Utils.writeValue(FILE_BLN_TIMEOUT, (Integer.parseInt(mValueTimeout) * 1000) + "\n");
                 
                 Utils.showToast(mContext, mContext.getString(R.string.touchkey_bln_timeout_dialog_success_toast));
             }

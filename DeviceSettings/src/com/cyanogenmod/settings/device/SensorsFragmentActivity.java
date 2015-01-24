@@ -116,7 +116,7 @@ public class SensorsFragmentActivity extends PreferenceFragment {
         Utils.writeValue(FILE_TOUCHKEY_TOGGLE, sharedPrefs.getBoolean(DisplaySettings.KEY_TOUCHKEY_LIGHT, true) ? "1" : "2");
         Utils.writeValue(FILE_BLN_TOGGLE, sharedPrefs.getBoolean(DisplaySettings.KEY_TOUCHKEY_BLN, false) ? "1" : "0");
         Utils.writeValue(FILE_BLN_INTERVAL, sharedPrefs.getString(DisplaySettings.KEY_TOUCHKEY_BLN_INTERVAL, "1000 1000"));
-        Utils.writeValue(FILE_BLN_TIMEOUT, sharedPrefs.getString(DisplaySettings.KEY_TOUCHKEY_BLN_TIMEOUT, "600") * 1000);
+        Utils.writeValue(FILE_BLN_TIMEOUT, (Integer.parseInt(sharedPrefs.getString(DisplaySettings.KEY_TOUCHKEY_BLN_TIMEOUT, "600")) * 1000) + '');
         Utils.writeValue(FILE_S2W_TOGGLE, sharedPrefs.getBoolean(DisplaySettings.KEY_TOUCHKEY_S2W, false) ? "1" : "0");
         Utils.writeValue(FILE_S2S_TOGGLE, sharedPrefs.getBoolean(DisplaySettings.KEY_TOUCHKEY_S2S, false) ? "1" : "0");
         Utils.writeValue(FILE_S2W_SENSITIVE_TOGGLE, sharedPrefs.getBoolean(DisplaySettings.KEY_TOUCHKEY_S2W_SENSITIVE, false) ? "1" : "0");
