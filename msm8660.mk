@@ -117,6 +117,10 @@ PRODUCT_PACKAGES += \
 PRODUCT_PACKAGES += \
     gps.msm8660
 
+# GPS configuration file for msm8660
+PRODUCT_COPY_FILES += \
+	device/samsung/msm8660-common/gps/gps.conf:/system/etc/gps.conf
+
 # Keylayouts
 PRODUCT_COPY_FILES += \
     $(LOCAL_PATH)/keylayout/8660_handset.kl:system/usr/keylayout/8660_handset.kl\
